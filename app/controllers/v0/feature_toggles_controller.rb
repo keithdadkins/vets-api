@@ -6,14 +6,13 @@ module V0
     skip_before_action :authenticate
     before_action :validate_session
 
-
     def index
       if params[:features].present?
         features_params = params[:features].split(',')
 
         features = features_params.collect do |feature_name|
           underscored_feature_name = feature_name.underscore
-          { name: feature_name, value: Flipper.enabled?(underscored_feature_name,  actor(underscored_feature_name)) }
+          { name: feature_name, value: Flipper.enabled?(underscored_feature_name, actor(underscored_feature_name)) }
         end
       else
         features = []
