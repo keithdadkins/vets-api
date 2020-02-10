@@ -134,11 +134,13 @@ describe Vet360::ContactInformation::Service, skip_vet360: true do
     context 'with a validation key' do
       let(:address) { build(:vet360_address, :override) }
 
-      it 'will override the address error', run_at: '2019-10-28 18:59:37 -0700' do
+      it 'will override the address error' do
         VCR.configure do |c|
           c.allow_http_connections_when_no_cassette = true
         end
         address.country_name = nil
+        address.address_line2 = nil
+        address.validation_key = nil
         binding.pry; fail
         VCR.use_cassette(
           'vet360/contact_information/put_address_override',
