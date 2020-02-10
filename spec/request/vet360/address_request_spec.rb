@@ -176,6 +176,7 @@ RSpec.describe 'address', type: :request do
   describe 'DELETE /v0/profile/addresses' do
     before do
       allow_any_instance_of(User).to receive(:icn).and_return('1234')
+      Timecop.return
     end
 
     let(:address) do
