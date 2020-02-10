@@ -176,6 +176,7 @@ RSpec.describe 'address', type: :request do
   describe 'DELETE /v0/profile/addresses' do
     let(:frozen_time) { Time.now }
     before do
+      allow_any_instance_of(User).to receive(:vet360_id).and_return('1')
       allow_any_instance_of(User).to receive(:icn).and_return('1234')
     end
 
