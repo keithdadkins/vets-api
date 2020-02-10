@@ -138,6 +138,7 @@ describe Vet360::ContactInformation::Service, skip_vet360: true do
         VCR.configure do |c|
           c.allow_http_connections_when_no_cassette = true
         end
+        address.country_name = nil
         binding.pry; fail
         VCR.use_cassette(
           'vet360/contact_information/put_address_override',
