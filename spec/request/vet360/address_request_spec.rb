@@ -174,22 +174,47 @@ RSpec.describe 'address', type: :request do
   end
 
   describe 'DELETE /v0/profile/addresses' do
-    let(:address) do
-      build(:vet360_address, vet360_id: user.vet360_id)
-    end
-    let(:id_in_cassette) { 42 }
-
     before do
-      allow_any_instance_of(User).to receive(:icn).and_return('64762895576664260')
-      address.id = id_in_cassette
-      address.address_line1 = '1493 Martin Luther King Rd'
-      address.city = 'Fulton'
-      address.state_code = 'MS'
-      address.zip_code = '38843'
+      allow_any_instance_of(User).to receive(:icn).and_return('1234')
+    end
+
+    let(:address) do
+      {"address_line1"=>"4041 Victoria Way",
+       "address_line2"=>nil,
+       "address_line3"=>nil,
+       "address_pou"=>"CORRESPONDENCE",
+       "address_type"=>"DOMESTIC",
+       "city"=>"Lexington",
+       "country_name"=>"United States",
+       "country_code_iso2"=>"US",
+       "country_code_iso3"=>"USA",
+       "country_code_fips"=>nil,
+       "county_code"=>"21067",
+       "county_name"=>"Fayette County",
+       "created_at"=>"2019-10-25T17:06:15.000Z",
+       "effective_end_date"=>nil,
+       "effective_start_date"=>"2020-02-10T17:40:15.000Z",
+       "id"=>108347,
+       "international_postal_code"=>nil,
+       "province"=>nil,
+       "source_date"=>"2020-02-10T17:40:15.000Z",
+       "source_system_user"=>nil,
+       "state_code"=>"KY",
+       "transaction_id"=>"537b388e-344a-474e-be12-08d43cf35d69",
+       "updated_at"=>"2020-02-10T17:40:25.000Z",
+       "validation_key"=>nil,
+       "vet360_id"=>"1",
+       "zip_code"=>"40515",
+       "zip_code_suffix"=>"4655"}
     end
 
     context 'when the method is DELETE' do
       it 'effective_end_date gets appended to the request body', :aggregate_failures do
+        VCR.config do |c|
+          c.allow_http_connections_when_no_cassette = true
+        end
+        binding.pry; fail
+        delete('/v0/profile/addresses', params: address.to_json, headers: headers)
         VCR.use_cassette('vet360/contact_information/delete_address_success', VCR::MATCH_EVERYTHING) do
           # The cassette we're using includes the effectiveEndDate in the body.
           # So this test will not pass if it's missing
