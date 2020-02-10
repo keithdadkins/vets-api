@@ -197,7 +197,6 @@ RSpec.describe 'address', type: :request do
        "id"=>108347,
        "international_postal_code"=>nil,
        "province"=>nil,
-       "source_date"=>"2020-02-10T17:40:15.000Z",
        "source_system_user"=>nil,
        "state_code"=>"KY",
        "transaction_id"=>"537b388e-344a-474e-be12-08d43cf35d69",
@@ -213,6 +212,7 @@ RSpec.describe 'address', type: :request do
         VCR.config do |c|
           c.allow_http_connections_when_no_cassette = true
         end
+        Settings.virtual_hosts << 'www.example.com'
         binding.pry; fail
         delete('/v0/profile/addresses', params: address.to_json, headers: headers)
         VCR.use_cassette('vet360/contact_information/delete_address_success', VCR::MATCH_EVERYTHING) do
